@@ -1,5 +1,8 @@
 package com.org.springrest3.springrest3.model;
 
+/**
+ * ManyToOne Mapping
+ */
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;  

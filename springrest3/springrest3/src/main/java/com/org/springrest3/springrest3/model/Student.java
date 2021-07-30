@@ -1,5 +1,9 @@
 package com.org.springrest3.springrest3.model;
 
+/**
+ * OneToMany Mapping
+ * Transient
+ */
 import java.util.HashSet;
 import java.util.Set;
 

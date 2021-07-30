@@ -1,5 +1,9 @@
 package com.org.spring.springrest2.model;
-
+/**
+ * Spring Rest using JPA
+ * Rest Validation
+ * Global Exception Handling
+ */
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

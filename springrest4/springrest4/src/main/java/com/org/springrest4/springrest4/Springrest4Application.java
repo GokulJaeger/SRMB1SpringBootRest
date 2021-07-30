@@ -1,57 +1,86 @@
 package com.org.springrest4.springrest4;
 
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
-import javax.transaction.Transactional;
+import com.org.springrest4.springrest4.model.Account;
+import com.org.springrest4.springrest4.model.AccountId;
+import com.org.springrest4.springrest4.model.Course;
+import com.org.springrest4.springrest4.model.Student;
+import com.org.springrest4.springrest4.repository.AccountRepository;
+import com.org.springrest4.springrest4.repository.CourseRepository;
+import com.org.springrest4.springrest4.repository.EmployeeRepository;
+import com.org.springrest4.springrest4.repository.StudentRepository;
 
-import com.org.springrest4.springrest4.model.Goods;
-import com.org.springrest4.springrest4.model.Supplier;
-import com.org.springrest4.springrest4.model.Vendor;
-import com.org.springrest4.springrest4.repository.GoodsRepository;
-import com.org.springrest4.springrest4.repository.SupplierRepository;
-import com.org.springrest4.springrest4.repository.VendorRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @SpringBootApplication
-public class Springrest4Application implements CommandLineRunner {
+public class Springrest4Application {
 
-    @Autowired
-	private GoodsRepository goodsRepo;
-
-    @Autowired
-	private VendorRepository vendorRepo;
-
-    @Autowired
-	private SupplierRepository supplierRepo;
-
+    
 	public static void main(String[] args) {
 		SpringApplication.run(Springrest4Application.class, args);
 	}
-	
-    @Override
-    @Transactional
-    public void run(String... strings) throws Exception {
-        Goods b1 = new Goods("Spring Boot");
-        Goods b2 = new Goods("Spring Data JPA");
-        goodsRepo.saveAll(Arrays.asList(b1, b2));
 
-        Vendor p1 = new Vendor("HelloKoding 1");
-        Vendor p2 = new Vendor("HelloKoding 2");
-        vendorRepo.saveAll(Arrays.asList(p1, p2));
+    @Bean
+    public CommandLineRunner mappingDemo1(AccountRepository accountRepository,
+                                         EmployeeRepository employeeRepository) {
+        return args -> {
 
-        Supplier bp1 = new Supplier(b1, p1, new Date());
-        Supplier bp2 = new Supplier(b1, p2, new Date());
-        Supplier bp3 = new Supplier(b2, p1, new Date());
-        Supplier bp4 = new Supplier(b2, p2, new Date());
-        supplierRepo.saveAll(Arrays.asList(bp1, bp2, bp3, bp4));
+            accountRepository.save(new Account("458666", "Checking", 4588,"Gokul"));
+            accountRepository.save(new Account("458689", "Checking", 2500,"Sachin"));
+            accountRepository.save(new Account("424265", "Saving", 100000,"Karthik"));
+
+
+            List<Account> accounts = accountRepository.findByAccountType("Checking");
+            accounts.forEach(System.out::println);
+
+
+            Optional<Account> account = accountRepository.findById(new AccountId("424265", "Saving"));
+            account.ifPresent(System.out::println);
+
+            // employeeRepository.save(new Employee(new EmployeeId(100L, 10L),
+            //         "Natsu Drag", "natsu@example.com", "123456"));
+            // employeeRepository.save(new Employee(new EmployeeId(101L, 20L),
+            //         "Eren JAeger", "eren@example.com", "654321"));
+
+            // List<Employee> employees = employeeRepository.findByEmployeeIdDepartmentId(20L);
+            // employees.forEach(System.out::println);
+
+
+            // Optional<Employee> employee = employeeRepository.findById(new EmployeeId(100L, 10L));
+            // employee.ifPresent(System.out::println);
+        };
     }
 
+    @Bean
+    public CommandLineRunner mappingDemo2(StudentRepository studentRepository,
+                                         CourseRepository courseRepository) {
+        return args -> {
+
+
+            Student student = new Student("Goku", 15, "8th");
+            Student student1 = new Student("Vegeta", 18, "9th");
+            studentRepository.save(student);
+            studentRepository.save(student1);
+
+            Course course1 = new Course("Machine Learning", "ML", 12, 1500);
+            Course course2 = new Course("Database Systems", "DS", 8, 800);
+            Course course3 = new Course("Web Basics", "WB", 10, 0);
+
+
+            courseRepository.saveAll(Arrays.asList(course1, course2, course3));
+
+            student.getCourses().addAll(Arrays.asList(course1, course2, course3));
+            student1.getCourses().addAll(Arrays.asList(course1, course2, course3));
+
+            studentRepository.save(student);
+            studentRepository.save(student1);
+            System.out.println(studentRepository.findByNameContaining("Goku"));
+        };
+    }
 }

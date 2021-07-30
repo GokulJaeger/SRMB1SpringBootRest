@@ -1,5 +1,8 @@
 package com.org.springrest5.springrest5.model;
 
+/**
+ * OneToOne Mapping
+ */
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
