@@ -1,5 +1,7 @@
 package com.org.springrest6.springrest6.configuration;
-
+/**
+ * Swagger Configuration file
+ */
 import java.util.Collections;
 
 
