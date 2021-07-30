@@ -46,7 +46,7 @@ public class EmployeeController {
             throws ResourceNotFoundException1 {
         Employee employee = employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException1("Employee not found for this id :: " + employeeId));
-        log.info("Data's fetched"+ employee.getClass());
+        log.info("Data's fetched: "+ employee.toString());
         return ResponseEntity.ok().body(employee);
     }
 
